@@ -9,7 +9,7 @@ import { Eye, EyeOff } from "lucide-react";
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     const navigate = useNavigate();
     const [postInputs, setPostInputs] = useState<SignupInput>({
-        username: "",
+        name: "",
         email: "",
         password: ""
     });
@@ -49,10 +49,10 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                     </div>
                 </div>
                 <div className="pt-5">
-                    {type === "signup" ? <LabelledInput label="Username" placeholder="JohnDoe" onChange={(e) => {
+                    {type === "signup" ? <LabelledInput label="Name" placeholder="John Doe" onChange={(e) => {
                         setPostInputs({
                             ...postInputs,
-                            username: e.target.value
+                            name: e.target.value
                         })
                     }} /> : null}
                     <LabelledInput label="Email" placeholder="xyz@gmail.com" onChange={(e) => {

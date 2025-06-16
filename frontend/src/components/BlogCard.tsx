@@ -5,7 +5,7 @@ interface BlogCardProps {
     title: string,
     content: string,
     publishedDate: string
-    id: number;
+    id: string;
 }
 
 export const BlogCard = ({
@@ -16,7 +16,7 @@ export const BlogCard = ({
     id
 }: BlogCardProps)=>{
     return <Link to={`/blog/${id}`}>
-        <div className=" w-screen max-w-screen-lg border border-1 border-gray-800 rounded-xl  p-4 pb-4 mt-4 cursor-pointer justify-center mb-6 bg-gradient-to-br from-slate-400 to-neutral-400">
+        <div className=" w-screen max-w-screen-lg border border-1 border-gray-800 rounded-xl  p-4 pb-4 mt-4 cursor-pointer justify-center mb-6 bg-gradient-to-r from-slate-400 to-gray-300">
             <div className=" flex">
                 <div className="flex justify-center flex-col pr-2">
                     <AvatarComponent name={authorName}/> 
@@ -35,7 +35,7 @@ export const BlogCard = ({
             <div className="text-xl font-normal mt-2 tracking-normal">
                 {content.slice(0,200) + " ..."}
             </div>
-            <div className="text-md text-slate-600 font-normal mt-3">
+            <div className="text-md text-zinc-700 font-semibold mt-3">
                 {`${Math.ceil(content.length / 1000)} minute(s) read`}
             </div>
         </div>

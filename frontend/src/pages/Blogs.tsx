@@ -3,13 +3,15 @@ import sakura from '../assets/sakura.png';
 import { Appbar } from "../components/Appbar";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks/index"; 
+import { useAuth } from "../hooks/index";
 
 
 export const Blogs = () => {
     const { loading, blogs } = useBlogs();
+    const {User} = useAuth();
 
     if (loading) {
-        return <div>
+        return <div className="min-h-screen h-full bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 ">
             <Appbar authorName="Loading..."/> 
             <div  className="flex justify-center">
                 <div>
@@ -23,7 +25,7 @@ export const Blogs = () => {
         </div>
     }
 
-    const authorName = blogs[0]?.author?.name || "Guest";
+    const authorName = blogs.find(blog => blog.author?.name === User?.name)?.author?.name || "Anonymous";
 
     return (
         <div className=" min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex justify-center px-4">

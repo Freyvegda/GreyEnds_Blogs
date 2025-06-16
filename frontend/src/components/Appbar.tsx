@@ -8,7 +8,7 @@ interface ProfileImageProps {
 
 export const Appbar = ({ authorName }: ProfileImageProps) => {
     return (
-        <div className="w-full flex justify-between items-center mt-5 pt-2 pb-2 px-5 border-b border-stone-600 rounded-xl">
+        <div className="w-full flex justify-between items-center pt-5 pb-4 px-5 border-b border-l border-r border-stone-600 rounded-xl">
             {/* Left: Logo + Title */}
             <Link
                 to="/blogs"
