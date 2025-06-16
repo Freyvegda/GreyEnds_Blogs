@@ -1,5 +1,5 @@
 {
-  "redirects": [
-    { "source": "/", "destination": "/signup", "permanent": true }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
