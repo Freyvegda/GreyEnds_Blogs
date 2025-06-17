@@ -44,7 +44,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                                     {blog.author.name || "Anonymous"}
                                 </div>
                                 <p className="pt-2 text-black-500 text-sm md:text-base mb-4 pb-2">
-                                    Random catch phrase about the author's ability to grab the user's attention
+                                    {blog.author.catchPhrase || "A passionate writer who loves to share knowledge."}
                                 </p>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
             <img
                 src={sakura}
                 alt="Sakura Tree"
-                className="fixed -bottom-11 -right-6 w-20 pointer-events-none z-10 hidden 2xl:block"
+                className="fixed -bottom-11 -right-6 w-30 pointer-events-none z-10 hidden 2xl:block"
             />
         </div>
     );

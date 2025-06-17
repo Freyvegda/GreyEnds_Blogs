@@ -59,7 +59,8 @@ blogRouter.post('/', async (c) => {
         include: {    // Add this to include author details
             author: {
                 select: {
-                    name: true
+                    name: true,
+                    catchPhrase: true,
                 }
             }
         }
@@ -71,7 +72,8 @@ blogRouter.post('/', async (c) => {
         content: blog.content,
         publishedDate: blog.publishedDate, 
         author: {
-            name: blog.author.name
+            name: blog.author.name,
+            catchPhrase: blog.author.catchPhrase
         }
     })
 })
@@ -118,7 +120,7 @@ blogRouter.get('/bulk', async (c) => {
             publishedDate: true,
             author: {
                 select: {
-                    name: true
+                    name: true,
                 }
             }
         }
@@ -147,7 +149,8 @@ blogRouter.get('/:id', async (c) => {
                 publishedDate: true,
                 author: {
                     select: {
-                        name: true
+                        name: true,
+                        catchPhrase: true,
                     }
                 }
             }

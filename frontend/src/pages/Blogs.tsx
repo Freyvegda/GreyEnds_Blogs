@@ -26,6 +26,7 @@ export const Blogs = () => {
     }
 
     const authorName = blogs.find(blog => blog.author?.name === User?.name)?.author?.name || "Anonymous";
+    
 
     return (
         <div className=" min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex justify-center px-4">

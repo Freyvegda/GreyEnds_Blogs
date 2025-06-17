@@ -14,7 +14,8 @@ export interface Blog {
     "id": string;  // Changed from number to string since Prisma uses string IDs
     "publishedDate": string;
     "author": {
-        "name": string
+        "name": string,
+        "catchPhrase": string
     }
 }
 
