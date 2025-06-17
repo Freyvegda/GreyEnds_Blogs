@@ -12,6 +12,7 @@ export interface Blog {
     "content": string;
     "title": string;
     "id": string;  // Changed from number to string since Prisma uses string IDs
+    "publishedDate": string;
     "author": {
         "name": string
     }

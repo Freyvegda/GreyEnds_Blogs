@@ -26,7 +26,11 @@ export const BlogCard = ({
                     {authorName}
                 </div>
                 <div className="text-md text-slate-700 font-light justify-center flex-col flex">
-                    |  {publishedDate}
+                    |  {new Date(publishedDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                    })}
                 </div>
             </div>
             <div className="text-2xl font-semibold mt-2 tracking-normal">
