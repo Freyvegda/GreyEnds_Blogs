@@ -2,14 +2,11 @@ import type { Blog } from "../hooks"
 import { Appbar } from "./Appbar"
 import { AvatarComponent } from "./BlogCard"
 import sakura from '../assets/sakura.png';
-import { useAuth } from "../hooks";
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
-    const { User } = useAuth();
-    const signInName = blog.author?.name === User?.name ? User?.name : User?.name || "Anonymous";
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex flex-col">
-            <Appbar authorName={signInName} />
+            <Appbar/>
 
             <div className="flex justify-center">
                 <div className="w-full max-w-screen-xl px-4 md:px-10 pt-8 md:pt-12 grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -36,7 +33,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                             Author:
                         </div>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center pt-4 gap-4">
-                            <div className="sm:pr-4 flex justify-center">
+                            <div className="sm:pr-2 flex justify-center pb-12">
                                 <AvatarComponent name={blog.author.name || "Anonymous"} />
                             </div>
                             <div>

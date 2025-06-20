@@ -36,13 +36,13 @@ export const Publish = () => {
         }
     }, [id]);
 
-    return <div>
-        <Appbar authorName="" />
-        <div className="flex justify-center w-full pt-8"> 
+    return <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex flex-col">
+        <Appbar/>
+        <div className="flex justify-center w-full pt-8 "> 
             <div className="max-w-screen-lg w-full">
                 <input value={title} onChange={(e) => {
                     setTitle(e.target.value)
-                }} type="text" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Title" />
+                }} type="text" className=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2 px-2 " placeholder="Title" />
 
                 <TextEditor value={description} onChange={(e) => {
                     setDescription(e.target.value)
@@ -95,9 +95,9 @@ function TextEditor({ onChange, value }: {onChange: (e: ChangeEvent<HTMLTextArea
     return <div className="mt-2">
         <div className="w-full mb-4 ">
             <div className="flex items-center justify-between border">
-            <div className="my-2 bg-white rounded-b-lg w-full">
+            <div className=" bg-white rounded-b-lg w-full">
                 <label className="sr-only">Publish post</label>
-                <textarea value={value} onChange={onChange} id="editor" rows={8} className="focus:outline-none block w-full px-0 text-sm text-gray-800 bg-white border-0 pl-2" placeholder="Write an article..." required />
+                <textarea value={value} onChange={onChange} id="editor" rows={8} className="focus:outline-none block w-full px-0 text-lg text-gray-800 bg-white border-0 pl-2" placeholder="Write an article..." required />
             </div>
         </div>
        </div>

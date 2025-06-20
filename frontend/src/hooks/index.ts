@@ -35,7 +35,12 @@ export const useAuth=()=>{
             }
         }
     }, [])
-    return {User}
+    const logout = () => {
+        localStorage.removeItem("token");
+        setUser(null);
+    };
+
+  return { User, logout };
 }
 
 
