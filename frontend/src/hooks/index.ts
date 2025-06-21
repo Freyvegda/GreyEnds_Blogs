@@ -9,6 +9,7 @@ export interface decodedUser{
 }   
 
 export interface Blog {
+    "tags": { name: string; }[] | undefined;
     "content": string;
     "title": string;
     "id": string;  // Changed from number to string since Prisma uses string IDs
