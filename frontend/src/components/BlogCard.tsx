@@ -5,7 +5,8 @@ interface BlogCardProps {
     title: string,
     content: string,
     publishedDate: string
-    id: string;
+    id: string,
+    tags?: { name: string }[];
 }
 
 export const BlogCard = ({
@@ -13,7 +14,8 @@ export const BlogCard = ({
     title,
     content,
     publishedDate,
-    id
+    id,
+    tags,
 }: BlogCardProps)=>{
     return <Link to={`/blog/${id}`}>
         <div className=" w-screen max-w-screen-lg border border-1 border-gray-800 rounded-xl  p-4 pb-4 mt-4 cursor-pointer justify-center mb-6 bg-gradient-to-r from-slate-400 to-gray-300">
@@ -42,6 +44,15 @@ export const BlogCard = ({
             <div className="text-md text-zinc-700 font-semibold mt-3">
                 {`${Math.ceil(content.length / 1000)} minute(s) read`}
             </div>
+            {tags && tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                    {tags.map((tag, index) => (
+                        <span key={index} className="bg-red-200 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                            #{tag.name}
+                        </span>
+                    ))}
+                </div>
+            )}
         </div>
     </Link>
 }

@@ -50,11 +50,19 @@ blogRouter.post('/', async (c) => {
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
+    const tagsToConnectOrCreate = body.tags?.map((tag: string) => ({
+        where: { name: tag },
+        create: { name: tag }
+    })) || [];
+
    const blog = await prisma.blog.create({
         data: {
             title: body.title,
             content: body.content,
-            authorId: authorId
+            authorId: authorId,
+            tags: {
+                connectOrCreate: tagsToConnectOrCreate
+            }
         },
         include: {    // Add this to include author details
             author: {
@@ -62,7 +70,8 @@ blogRouter.post('/', async (c) => {
                     name: true,
                     catchPhrase: true,
                 }
-            }
+            },
+            tags: true
         }
     })
 
@@ -122,6 +131,9 @@ blogRouter.get('/bulk', async (c) => {
                 select: {
                     name: true,
                 }
+            },
+            tags: {
+                select: { name: true }
             }
         }
     });
@@ -152,6 +164,9 @@ blogRouter.get('/:id', async (c) => {
                         name: true,
                         catchPhrase: true,
                     }
+                },
+                tags: {
+                    select: { name: true }
                 }
             }
         })

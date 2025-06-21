@@ -43,6 +43,7 @@ export const Blogs = () => {
                                 title={blog.title}
                                 content={blog.content}
                                 publishedDate={blog.publishedDate}
+                                tags={blog.tags}
                             />
                         </div>
                     ))}

@@ -22,6 +22,18 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                                 day: 'numeric'
                             })}
                         </p>
+                        {blog.tags && blog.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {blog.tags.map((tag, index) => (
+                                    <span
+                                        key={index}
+                                        className="bg-rose-300 text-black-800 text-xs font-semibold px-3 py-1 rounded-full"
+                                    >
+                                        #{tag.name}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
                         <div className="pt-4 text-slate-800 font-medium text-base md:text-xl break-words whitespace-pre-line mb-20">
                             {blog.content}
                         </div>

@@ -24,4 +24,11 @@ model Blog {
   publishedDate DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  tags      Tag[]    @relation("BlogTags")
+}
+
+model Tag{
+  id String @id @default(uuid())
+  name String @unique
+  blogs Blog[] @relation("BlogTags")
 }
