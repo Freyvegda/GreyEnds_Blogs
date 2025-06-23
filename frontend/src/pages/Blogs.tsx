@@ -70,44 +70,47 @@ export const Blogs = () => {
         </div>
 
         {/* Sorting Dropdown */}
-        <div className="w-full max-w-4xl mx-auto mt-6 flex justify-end px-2">
-          <select
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-            className=" px-3 py-2 bg-transparent text-black-800 font-semibold border-slate-500 rounded-lg border-2 appearance-none"
-          >
-            <option className="bg-transparent text-black" value="newest">
-              Newest
-            </option>
-            <option className="bg-transparent text-black" value="oldest">
-              Oldest
-            </option>
-            <option className="bg-transparent text-black" value="title-az">
-              Title A-Z
-            </option>
-            <option className="bg-transparent text-black" value="title-za">
-              Title Z-A
-            </option>
-          </select>
-        </div>
-
-        {/* Blog Cards */}
-        <div className="w-4xl mx-auto mt-4 flex justify-center flex-col items-center">
-          {sortedBlogs.map((blog) => (
-            <div key={blog.id}>
-              <BlogCard
-                id={blog.id}
-                authorName={blog.author.name || "Anonymous"}
-                title={blog.title}
-                content={blog.content}
-                publishedDate={blog.publishedDate}
-                tags={blog.tags}
-              />
+        {/* Blog Section Container */}
+          <div className="w-full max-w-4xl mx-auto mt-6 px-2">
+            {/* Sorting Dropdown */}
+            <div className="flex justify-end mb-4">
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="px-3 py-2 bg-transparent text-black font-semibold border-slate-500 rounded-lg border-2 appearance-none"
+              >
+                <option className="bg-transparent text-black" value="newest">
+                  Newest
+                </option>
+                <option className="bg-transparent text-black" value="oldest">
+                  Oldest
+                </option>
+                <option className="bg-transparent text-black" value="title-az">
+                  Title A-Z
+                </option>
+                <option className="bg-transparent text-black" value="title-za">
+                  Title Z-A
+                </option>
+              </select>
             </div>
-          ))}
-        </div>
-      </div>
 
+            {/* Blog Cards */}
+            <div className="flex flex-col items-center">
+              {sortedBlogs.map((blog) => (
+                <div key={blog.id}>
+                  <BlogCard
+                    id={blog.id}
+                    authorName={blog.author.name || "Anonymous"}
+                    title={blog.title}
+                    content={blog.content}
+                    publishedDate={blog.publishedDate}
+                    tags={blog.tags}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+      </div>
       {/* Scroll to Top Button */}
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:left-10 md:translate-x-0 z-20">
         <button

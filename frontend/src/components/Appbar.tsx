@@ -28,7 +28,7 @@ export const Appbar = () => {
                 <Link to="/publish">
                     <button
                         type="button"
-                        className="text-sm sm:text-sm bg-transparent sm:bg-gray-700 hover:bg-gray-100 sm:hover:bg-gray-800 text-gray-800 sm:text-white border border-gray-300 sm:border-0 font-medium rounded-full px-3 py-1 sm:px-5 sm:py-2.5 transition"
+                        className="text-sm font-semibold sm:text-sm bg-slate-500 sm:bg-gray-700 hover:bg-gray-100 sm:hover:bg-gray-800 text-white sm:text-white border border-gray-300 sm:border-0 rounded-full px-3 py-1 sm:px-5 sm:py-2.5 transition"
                     >
                         New
                     </button>

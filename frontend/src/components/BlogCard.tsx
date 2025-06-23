@@ -18,7 +18,7 @@ export const BlogCard = ({
     tags,
 }: BlogCardProps)=>{
     return <Link to={`/blog/${id}`}>
-        <div className=" w-screen max-w-screen-lg border border-1 border-gray-800 rounded-xl  p-4 pb-4 mt-4 cursor-pointer justify-center mb-6 bg-gradient-to-r from-slate-400 to-gray-300">
+        <div className=" w-screen max-w-screen-lg border border-1 border-gray-800 rounded-xl  p-4 pb-4 mt-4 cursor-pointer justify-center mb-6 bg-gradient-to-r from-slate-400 to-gray-300 mx-3">
             <div className=" flex">
                 <div className="flex justify-center flex-col pr-2">
                     <AvatarComponent name={authorName}/> 
