@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { BlogCard } from "../components/BlogCard";
 import sakura from "../assets/sakura.png";
 import { Appbar } from "../components/Appbar";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks/index";
-
+import type { Blog } from "../hooks";
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
+  const [sortOption, setSortOption] = useState("newest");
 
   if (loading) {
     return (
@@ -13,30 +15,52 @@ export const Blogs = () => {
         <Appbar />
         <div className="flex justify-center">
           <div>
-            <BlogSkeleton />
-            <BlogSkeleton />
-            <BlogSkeleton />
-            <BlogSkeleton />
-            <BlogSkeleton />
+            {[...Array(5)].map((_, i) => (
+              <BlogSkeleton key={i} />
+            ))}
           </div>
         </div>
       </div>
     );
   }
 
-  // Sort by publishedDate DESC
-  // Then prioritize Freyvegda's blogs on top
-  const sortedBlogs = [...blogs]
-    .sort(
-      (a, b) =>
-        new Date(b.publishedDate).getTime() -
-        new Date(a.publishedDate).getTime()
-    )
-    .sort((a, b) => {
+  const sortBlogs = (blogs: Blog[]) => {
+    const sorted = [...blogs];
+
+    // Always prioritize Freyvegda's blogs first
+    sorted.sort((a, b) => {
       const isFreyA = a.author.name === "Freyvegda" ? 1 : 0;
       const isFreyB = b.author.name === "Freyvegda" ? 1 : 0;
       return isFreyB - isFreyA;
     });
+
+    switch (sortOption) {
+      case "title-az":
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "title-za":
+        sorted.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case "oldest":
+        sorted.sort(
+          (a, b) =>
+            new Date(a.publishedDate).getTime() -
+            new Date(b.publishedDate).getTime()
+        );
+        break;
+      case "newest":
+      default:
+        sorted.sort(
+          (a, b) =>
+            new Date(b.publishedDate).getTime() -
+            new Date(a.publishedDate).getTime()
+        );
+    }
+
+    return sorted;
+  };
+
+  const sortedBlogs = sortBlogs(blogs);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex justify-center sm:px-4 px-2">
@@ -44,9 +68,33 @@ export const Blogs = () => {
         <div className="h-20">
           <Appbar />
         </div>
-        <div className="w-4xl mx-auto mt-5 flex justify-center flex-col items-center">
+
+        {/* Sorting Dropdown */}
+        <div className="w-full max-w-4xl mx-auto mt-6 flex justify-end px-2">
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className=" px-3 py-2 bg-transparent text-black-800 font-semibold border-slate-500 rounded-lg border-2 appearance-none"
+          >
+            <option className="bg-transparent text-black" value="newest">
+              Newest
+            </option>
+            <option className="bg-transparent text-black" value="oldest">
+              Oldest
+            </option>
+            <option className="bg-transparent text-black" value="title-az">
+              Title A-Z
+            </option>
+            <option className="bg-transparent text-black" value="title-za">
+              Title Z-A
+            </option>
+          </select>
+        </div>
+
+        {/* Blog Cards */}
+        <div className="w-4xl mx-auto mt-4 flex justify-center flex-col items-center">
           {sortedBlogs.map((blog) => (
-            <div key={blog.id} className="">
+            <div key={blog.id}>
               <BlogCard
                 id={blog.id}
                 authorName={blog.author.name || "Anonymous"}
