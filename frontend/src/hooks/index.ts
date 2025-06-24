@@ -40,8 +40,11 @@ export const useAuth=()=>{
         localStorage.removeItem("token");
         setUser(null);
     };
+    const updateUser = (updatedFields: Partial<decodedUser>) => {
+        setUser((prev) => (prev ? { ...prev, ...updatedFields } : prev));
+    };
 
-  return { User, logout };
+    return { User, logout, updateUser };
 }
 
 

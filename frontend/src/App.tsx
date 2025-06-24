@@ -4,6 +4,7 @@ import { Blog } from "./pages/Blog"
 import { Blogs } from "./pages/Blogs"
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
 import { Publish } from "./pages/Publish"
+import { EditProfile } from "./pages/EditProfile"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/blog/:id" element={<Blog />} />
           <Route path="/blogs" element={<Blogs/>} />
           <Route path="/publish" element={<Publish />} />
+          <Route path="/edit" element={<EditProfile/>}/>
         </Routes>
       </BrowserRouter>
     </>

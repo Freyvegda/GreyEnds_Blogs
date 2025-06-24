@@ -29,4 +29,12 @@ export const updateBlogInput = z.object({
 })
 export type UpdateBlogInput = z.infer<typeof updateBlogInput>
 
+export const updateUserInput = z.object({
+  name: z.string().min(1).optional(),
+  email: z.string().email().optional(),
+  password: z.string().min(6).optional(),
+  catchPhrase: z.string().optional(),
+});
+
+export type UpdateUserInput = z.infer<typeof updateUserInput>
 
