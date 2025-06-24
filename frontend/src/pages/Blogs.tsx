@@ -5,9 +5,13 @@ import { Appbar } from "../components/Appbar";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks/index";
 import type { Blog } from "../hooks";
+import { SearchBar } from "../components/SearchBar";
+
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
   const [sortOption, setSortOption] = useState("newest");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState<"title" | "author" | "tags">("title");
 
   if (loading) {
     return (
@@ -60,7 +64,15 @@ export const Blogs = () => {
     return sorted;
   };
 
-  const sortedBlogs = sortBlogs(blogs);
+  const filteredBlogs = blogs.filter((blog) => {
+    const value = searchTerm.toLowerCase();
+    if (searchBy === "title") return blog.title.toLowerCase().includes(value);
+    if (searchBy === "author") return blog.author.name.toLowerCase().includes(value);
+    if (searchBy === "tags") return blog.tags?.some(tag => tag.name.toLowerCase().includes(value));
+    return false;
+  });
+
+  const sortedBlogs = sortBlogs(filteredBlogs);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex justify-center sm:px-4 px-2">
@@ -69,34 +81,35 @@ export const Blogs = () => {
           <Appbar />
         </div>
 
-        {/* Sorting Dropdown */}
-        {/* Blog Section Container */}
-          <div className="w-full max-w-4xl mx-auto mt-6 px-2">
+        <div className="w-full max-w-4xl mx-auto mt-6 px-2">
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
+            {/* Search Bar */}
+            <SearchBar
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              searchBy={searchBy}
+              setSearchBy={setSearchBy}
+            />
+
             {/* Sorting Dropdown */}
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end">
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
-                className="px-3 py-2 bg-transparent text-black font-semibold border-slate-500 rounded-lg border-2 appearance-none"
+                className="px-3 ml-1 py-2 bg-transparent text-black font-semibold border-slate-500 rounded-lg border-2 appearance-none"
               >
-                <option className="bg-transparent text-black" value="newest">
-                  Newest
-                </option>
-                <option className="bg-transparent text-black" value="oldest">
-                  Oldest
-                </option>
-                <option className="bg-transparent text-black" value="title-az">
-                  Title A-Z
-                </option>
-                <option className="bg-transparent text-black" value="title-za">
-                  Title Z-A
-                </option>
+                <option className="bg-transparent text-black" value="newest">Newest</option>
+                <option className="bg-transparent text-black" value="oldest">Oldest</option>
+                <option className="bg-transparent text-black" value="title-az">Title A-Z</option>
+                <option className="bg-transparent text-black" value="title-za">Title Z-A</option>
               </select>
             </div>
+          </div>
 
-            {/* Blog Cards */}
-            <div className="flex flex-col items-center">
-              {sortedBlogs.map((blog) => (
+          {/* Blog Cards */}
+          <div className="flex flex-col items-center mt-6">
+            {sortedBlogs.length > 0 ? (
+              sortedBlogs.map((blog) => (
                 <div key={blog.id}>
                   <BlogCard
                     id={blog.id}
@@ -107,10 +120,16 @@ export const Blogs = () => {
                     tags={blog.tags}
                   />
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <div className="text-center text-lg text-white mt-10">
+                <p>No blogs found for the given search.</p>
+              </div>
+            )}
           </div>
+        </div>
       </div>
+
       {/* Scroll to Top Button */}
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:left-10 md:translate-x-0 z-20">
         <button
