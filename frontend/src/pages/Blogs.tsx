@@ -7,6 +7,8 @@ import { useBlogs } from "../hooks/index";
 import type { Blog } from "../hooks";
 import { SearchBar } from "../components/SearchBar";
 
+
+
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
   const [sortOption, setSortOption] = useState("newest");
@@ -102,6 +104,7 @@ export const Blogs = () => {
                 <option className="bg-transparent text-black" value="oldest">Oldest</option>
                 <option className="bg-transparent text-black" value="title-az">Title A-Z</option>
                 <option className="bg-transparent text-black" value="title-za">Title Z-A</option>
+                
               </select>
             </div>
           </div>

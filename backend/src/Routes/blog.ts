@@ -183,52 +183,53 @@ blogRouter.get('/:id', async (c) => {
     }
 })
 
-blogRouter.post('/comment', async (c)=>{
-    const body= await c.req.json();
-    const {success} = createComment.safeParse(body);
-    if(!success){
-        c.status(411);
-        return c.json({
-            message: "Invalid Inputs"
-        })
-    }
+blogRouter.post('/comment', async (c) => {
+  let body;
+  try {
+    body = await c.req.json();
+  } catch (e) {
+    c.status(400);
+    return c.json({
+      message: "Invalid JSON format"
+    });
+  }
 
-    const userId = c.get("userId")
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
+  const userId = c.get("userId");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
 
-    try{
-        const comment = await prisma.comment.create({
-            data: {
-                content: body.content,
-                authorId: userId,
-                blogId: body.blogId
-            },
-            include:{
-                author: {
-                    select: {
-                        name: true,
-                    }
-                }
-            }
-        })
+  try {
+    const comment = await prisma.comment.create({
+      data: {
+        content: body.content,
+        authorId: userId,
+        blogId: body.blogId
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+          }
+        }
+      }
+    });
 
-        return c.json({
-            id: comment.id,
-            content: comment.content,
-            createdAt: comment.createdAt,
-            author: comment.author
-        });
-    }
+    return c.json({
+      id: comment.id,
+      content: comment.content,
+      createdAt: comment.createdAt,
+      author: comment.author
+    });
+  } catch (e) {
+    c.status(500);
+    return c.json({
+      message: "Error creating comment",
+      error: (e as Error).message
+    });
+  }
+});
 
-    catch(e){
-        c.status(500);
-        return c.json({
-            messsage: "Error creating comment"
-        })
-    }
-})
 
 
 blogRouter.get('/comment/:blogId', async (c)=>{

@@ -2,6 +2,8 @@ import type { Blog } from "../hooks"
 import { Appbar } from "./Appbar"
 import { AvatarComponent } from "./BlogCard"
 import sakura from '../assets/sakura.png';
+import { AddCommentForm } from "./CommentForm"
+import { CommentList } from "./CommentList"
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
     return (
@@ -37,8 +39,16 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                         <div className="pt-4 text-slate-800 font-medium text-base md:text-xl break-words whitespace-pre-line mb-20">
                             {blog.content}
                         </div>
-                    </div>
+                        <div className="mt-12 mb-20">
+                            <h2 className="text-2xl font-bold mb-4">Comments:</h2>
 
+                            {/* Add Comment Form */}
+                            <AddCommentForm blogId={blog.id} />
+
+                            {/* Show Comments */}
+                            <CommentList blogId={blog.id} />
+                        </div>
+                    </div>
                     {/* Author section (mobile optimized) */}
                     <div className="md:col-span-4 rounded-lg px-2 md:px-4 pt-4 md:pt-2 mt-8 md:mt-0 border-t border-gray-800 md:border-none pb-8 md:pb-0">
                         <div className="text-black-300 text-base md:text-lg font-semibold">
