@@ -5,6 +5,7 @@ import { Blogs } from "./pages/Blogs"
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
 import { Publish } from "./pages/Publish"
 import { EditProfile } from "./pages/EditProfile"
+import { Spinner } from "./components/Spinner"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/blogs" element={<Blogs/>} />
           <Route path="/publish" element={<Publish />} />
           <Route path="/edit" element={<EditProfile/>}/>
+          <Route path="/spinner" element={<Spinner/>} />
         </Routes>
       </BrowserRouter>
     </>
