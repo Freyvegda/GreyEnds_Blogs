@@ -14,6 +14,7 @@ model User {
   password String
   catchPhrase String?
   posts    Blog[]
+  comments Comment[]
 }
 
 model Blog {
@@ -25,10 +26,21 @@ model Blog {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   tags      Tag[]    @relation("BlogTags")
+  comments Comment[]
 }
 
 model Tag{
   id String @id @default(uuid())
   name String @unique
   blogs Blog[] @relation("BlogTags")
+}
+
+model Comment{
+  id String @id @default(uuid())
+  content String 
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  blogId    String
 }

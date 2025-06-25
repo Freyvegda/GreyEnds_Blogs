@@ -38,3 +38,9 @@ export const updateUserInput = z.object({
 
 export type UpdateUserInput = z.infer<typeof updateUserInput>
 
+
+export const createComment = z.object({
+    id: z.string().uuid(),
+    content: z.string().min(1, "Comment cannot be empty"),
+})
+export type CreateComment = z.infer<typeof createComment>

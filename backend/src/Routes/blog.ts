@@ -1,8 +1,9 @@
-import { createBlog, updateBlogInput } from "frey_medium-common";
+import { createBlog, createComment, updateBlogInput } from "frey_medium-common";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
+import { CreateComment } from "frey_medium-common";
 
 export const blogRouter = new Hono<{
     Bindings: {
@@ -179,5 +180,86 @@ blogRouter.get('/:id', async (c) => {
         return c.json({
             message: "Error while fetching blog post"
         });
+    }
+})
+
+blogRouter.post('/comment', async (c)=>{
+    const body= await c.req.json();
+    const {success} = createComment.safeParse(body);
+    if(!success){
+        c.status(411);
+        return c.json({
+            message: "Invalid Inputs"
+        })
+    }
+
+    const userId = c.get("userId")
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try{
+        const comment = await prisma.comment.create({
+            data: {
+                content: body.content,
+                authorId: userId,
+                blogId: body.blogId
+            },
+            include:{
+                author: {
+                    select: {
+                        name: true,
+                    }
+                }
+            }
+        })
+
+        return c.json({
+            id: comment.id,
+            content: comment.content,
+            createdAt: comment.createdAt,
+            author: comment.author
+        });
+    }
+
+    catch(e){
+        c.status(500);
+        return c.json({
+            messsage: "Error creating comment"
+        })
+    }
+})
+
+
+blogRouter.get('/comment/:blogId', async (c)=>{
+    const blogId = c.req.param("blogId");
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try{
+        const comments = await prisma.comment.findMany({
+            where: {blogId},
+            orderBy: {createdAt: "desc"},
+            select:{
+                id: true,
+                content: true,
+                createdAt: true,
+                author: {
+                    select:{
+                        name : true
+                    }
+                }
+            }
+        })
+
+        return c.json({comments})
+    }
+
+    catch(e){
+        c.status(500);
+        c.json({
+            message: "Error retrieving the comments"
+        })
     }
 })
