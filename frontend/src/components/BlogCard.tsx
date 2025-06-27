@@ -7,8 +7,6 @@ interface BlogCardProps {
     publishedDate: string
     id: string,
     tags?: { name: string }[];
-    likes: number;
-    likedByCurrentUser?: boolean;
 }
 
 export const BlogCard = ({
