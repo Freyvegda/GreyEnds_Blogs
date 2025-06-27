@@ -41,6 +41,6 @@ export type UpdateUserInput = z.infer<typeof updateUserInput>
 
 export const createComment = z.object({
     id: z.string().uuid(),
-    content: z.string().min(1),
+    content: z.string().min(1)
 })
 export type CreateComment = z.infer<typeof createComment>
