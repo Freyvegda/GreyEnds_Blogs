@@ -135,6 +135,9 @@ blogRouter.get('/bulk', async (c) => {
             },
             tags: {
                 select: { name: true }
+            },
+            _count:{
+                select:{ likes: true}
             }
         }
     });
@@ -263,4 +266,73 @@ blogRouter.get('/comment/:blogId', async (c)=>{
             message: "Error retrieving the comments"
         })
     }
+})
+
+
+blogRouter.post('/:id/like', async (c)=>{
+    const userId = c.get("userId");
+    const blogId= c.req.param("id");
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try{
+        await prisma.like.create({
+            data:{
+                blogId,
+                userId
+            }
+        })
+        return c.json({
+            message: "BLog Liked"
+        })
+    }
+    catch(e){
+        // unique constraint violation
+        if ((e as any).code === "P2002") { 
+            c.status(400);
+            return c.json({ message: "Already liked" });
+        }
+        c.status(500);
+        return c.json({ message: "Error liking blog" });
+    }
+})
+
+blogRouter.delete('/:id/like', async (c)=>{
+    const userId = c.get("userId");
+    const blogId= c.req.param("id");
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try{
+       await prisma.like.delete({
+            where: {
+                userId_blogId: {
+                    userId,
+                    blogId,
+                }
+            }
+       })
+       return c.json({message: "Message unliked"})
+    }
+    catch(e){
+        c.status(500);
+        return c.json({
+            message: "Error in disliking the blog"
+        })
+    }
+})
+
+blogRouter.get('/:id/likes',  async (c)=>{
+    const blogId = c.req.param("id");
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const count = await prisma.like.count({
+        where: {blogId}
+    })
+
+    return c.json({count});
 })
