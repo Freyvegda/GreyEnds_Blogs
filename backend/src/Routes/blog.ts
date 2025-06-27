@@ -119,6 +119,7 @@ blogRouter.put('/', async (c) => {
 
 // Todo: add pagination
 blogRouter.get('/bulk', async (c) => {
+    const userId = c.get("userId")
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -138,6 +139,10 @@ blogRouter.get('/bulk', async (c) => {
             },
             _count:{
                 select:{ likes: true}
+            },
+            likes: {
+                where: { userId }, //  only include if this user liked
+                select: { id: true }
             }
         }
     });
@@ -149,6 +154,7 @@ blogRouter.get('/bulk', async (c) => {
 
 blogRouter.get('/:id', async (c) => {
     const id = c.req.param("id");
+    const userId= c.get("userId");
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -171,13 +177,33 @@ blogRouter.get('/:id', async (c) => {
                 },
                 tags: {
                     select: { name: true }
-                }
+                },
+                _count: {
+                    select: { likes: true },
+                },
+                // Check if the current user liked this blog
+                likes: userId ? {
+                    where: { userId },
+                    select: { id: true },
+                } : false,
+
             }
         })
-    
+
+        if (!blog) {
+            c.status(404);
+            return c.json({ message: "Blog not found" });   
+        }
+
+        // Add likedByCurrentUser flag if userId exists
+        const likedByCurrentUser = userId && blog.likes && blog.likes.length > 0;
         return c.json({
-            blog
+            blog: {
+                ...blog,
+                likedByCurrentUser,
+            },
         });
+        
     } catch(e) {
         c.status(411); // 4
         return c.json({

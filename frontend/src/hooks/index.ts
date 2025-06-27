@@ -19,6 +19,10 @@ export interface Blog {
         "name": string,
         "catchPhrase": string
     }
+    "_count": {
+        likes: number;
+    };
+    "likedByCurrentUser?": boolean;
 }
 
 export interface Comment{

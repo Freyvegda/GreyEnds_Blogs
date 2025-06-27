@@ -7,6 +7,8 @@ interface BlogCardProps {
     publishedDate: string
     id: string,
     tags?: { name: string }[];
+    likes: number;
+    likedByCurrentUser?: boolean;
 }
 
 export const BlogCard = ({
@@ -34,6 +36,7 @@ export const BlogCard = ({
                             day: 'numeric'
                     })}
                 </div>
+                
             </div>
             <div className="text-2xl font-semibold mt-2 tracking-normal">
                 {title}
