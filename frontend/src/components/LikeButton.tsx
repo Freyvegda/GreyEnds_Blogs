@@ -18,7 +18,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ count, liked, onClick, d
       aria-label={liked ? "Unlike this blog" : "Like this blog"}
       className={clsx(
         "flex items-center gap-1 rounded-md border border-transparent p-1 text-md text-slate-800 transition-all",
-        "hover:bg-rose-200 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-semibold"
+        "hover:bg-rose-300 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-semibold"
       )}
     >
       <svg

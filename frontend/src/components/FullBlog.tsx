@@ -75,7 +75,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                     })}
                 </p>
                 <div className="pl-2">
-                <LikeButton count={likes} liked={liked} onClick={toggleLike} disabled={loading} />
+                    <LikeButton count={likes} liked={liked} onClick={toggleLike} disabled={loading} />
                 </div>
             </div>
             
