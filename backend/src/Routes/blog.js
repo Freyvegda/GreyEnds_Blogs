@@ -375,41 +375,50 @@ blogRouter.get("/bookmarks", async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    const bookmarks = await prisma.bookmark.findMany({
-        where: { userId },
-        include: {
-            blog: {
-                select: {
-                    id: true,
-                    title: true,
-                    content: true,
-                    publishedDate: true,
-                    author: {
-                        select: {
-                            name: true,
-                            catchPhrase: true,
+    try {
+        const bookmarks = await prisma.bookmark.findMany({
+            where: { userId },
+            include: {
+                blog: {
+                    select: {
+                        id: true,
+                        title: true,
+                        content: true,
+                        publishedDate: true,
+                        author: {
+                            select: {
+                                name: true,
+                                catchPhrase: true,
+                            },
                         },
-                    },
-                    tags: {
-                        select: { name: true },
-                    },
-                    _count: {
-                        select: { likes: true },
+                        tags: {
+                            select: { name: true },
+                        },
+                        _count: {
+                            select: { likes: true },
+                        },
                     },
                 },
             },
-        },
-    });
-    // Shape response
-    return c.json({
-        bookmarks: bookmarks.map((bm) => ({
-            id: bm.blog.id,
-            title: bm.blog.title,
-            content: bm.blog.content,
-            publishedDate: bm.blog.publishedDate,
-            author: bm.blog.author,
-            tags: bm.blog.tags,
-            likesCount: bm.blog._count.likes,
-        })),
-    });
+        });
+        // Shape response
+        return c.json({
+            bookmarks: bookmarks.map((bm) => ({
+                id: bm.blog.id,
+                title: bm.blog.title,
+                content: bm.blog.content,
+                publishedDate: bm.blog.publishedDate,
+                author: bm.blog.author,
+                tags: bm.blog.tags,
+                likesCount: bm.blog._count.likes,
+            })),
+        });
+    }
+    catch (e) {
+        c.status(500);
+        return c.json({
+            message: "Error fetching bookmarks",
+            error: e.message,
+        });
+    }
 });
