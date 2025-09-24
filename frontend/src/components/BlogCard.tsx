@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 interface BlogCardProps {
     authorName: string,
     title: string,
@@ -52,6 +53,9 @@ export const BlogCard = ({
                             #{tag.name}
                         </span>
                     ))}
+                    <div>
+                        
+                    </div>
                 </div>
             )}
         </div>

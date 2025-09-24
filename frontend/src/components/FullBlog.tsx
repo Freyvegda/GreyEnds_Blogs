@@ -8,6 +8,8 @@ import { CommentList } from "./CommentList";
 import { LikeButton } from "./LikeButton"; // ✅ LikeButton component
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import BookmarkButton from "./BookmarkButton"
+
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
   const [likes, setLikes] = useState(blog._count.likes || 0);
@@ -76,6 +78,9 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                 </p>
                 <div className="pl-2">
                     <LikeButton count={likes} liked={liked} onClick={toggleLike} disabled={loading} />
+                </div>
+                <div className="mt-1">
+                  <BookmarkButton blogId={blog.id}/>
                 </div>
             </div>
             
