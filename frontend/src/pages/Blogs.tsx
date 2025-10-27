@@ -7,20 +7,18 @@ import { useBlogs } from "../hooks/index";
 import type { Blog } from "../hooks";
 import { SearchBar } from "../components/SearchBar";
 
-
-
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
-  const [sortOption, setSortOption] = useState("newest");
+  const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState<"title" | "author" | "tags">("title");
 
   if (loading) {
     return (
-      <div className="min-h-screen h-full bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400">
+      <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50">
         <Appbar />
-        <div className="flex justify-center">
-          <div>
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          <div className="space-y-6">
             {[...Array(5)].map((_, i) => (
               <BlogSkeleton key={i} />
             ))}
@@ -40,12 +38,9 @@ export const Blogs = () => {
       return isFreyB - isFreyA;
     });
 
-    switch (sortOption) {
-      case "title-az":
+    switch (sortBy) {
+      case "title":
         sorted.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "title-za":
-        sorted.sort((a, b) => b.title.localeCompare(a.title));
         break;
       case "oldest":
         sorted.sort(
@@ -77,79 +72,70 @@ export const Blogs = () => {
   const sortedBlogs = sortBlogs(filteredBlogs);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex justify-center sm:px-4 px-2">
-      <div className="w-full min-h-screen">
-        <div className="h-20">
-          <Appbar />
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50 relative">
+      <Appbar />
+      
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        {/* Search Bar with Sorting */}
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchBy={searchBy}
+          setSearchBy={setSearchBy}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+        />
 
-        <div className="w-full max-w-4xl mx-auto mt-6 px-2">
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
-            {/* Search Bar */}
-            <SearchBar
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              searchBy={searchBy}
-              setSearchBy={setSearchBy}
-            />
-
-            {/* Sorting Dropdown */}
-            <div className="flex justify-end">
-              <select
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value)}
-                className="px-3 ml-1 py-2 bg-transparent text-black font-semibold border-slate-500 rounded-lg border-2 appearance-none"
-              >
-                <option className="bg-transparent text-black" value="newest">Newest</option>
-                <option className="bg-transparent text-black" value="oldest">Oldest</option>
-                <option className="bg-transparent text-black" value="title-az">Title A-Z</option>
-                <option className="bg-transparent text-black" value="title-za">Title Z-A</option>
-                
-              </select>
+        {/* Blog Cards */}
+        <div className="space-y-6">
+          {sortedBlogs.length > 0 ? (
+            sortedBlogs.map((blog) => (
+              <BlogCard
+                key={blog.id}
+                id={blog.id}
+                authorName={blog.author.name || "Anonymous"}
+                title={blog.title}
+                content={blog.content}
+                publishedDate={blog.publishedDate}
+                tags={blog.tags}
+              />
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-slate-500">No blogs found for the given search.</p>
             </div>
-          </div>
-
-          {/* Blog Cards */}
-          <div className="flex flex-col items-center mt-6">
-            {sortedBlogs.length > 0 ? (
-              sortedBlogs.map((blog) => (
-                <div key={blog.id}>
-                  <BlogCard
-                    id={blog.id}
-                    authorName={blog.author.name || "Anonymous"}
-                    title={blog.title}
-                    content={blog.content}
-                    publishedDate={blog.publishedDate}
-                    tags={blog.tags}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="text-center text-lg text-white mt-10">
-                <p>No blogs found for the given search.</p>
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
 
       {/* Scroll to Top Button */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:left-10 md:translate-x-0 z-20">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="bg-rose-500 text-white px-3 py-2 rounded-full shadow hover:bg-rose-600 transition"
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 left-6 bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white w-14 h-14 rounded-full shadow-lg transition-all flex items-center justify-center z-10"
+      >
+        <svg 
+          className="w-6 h-6" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
         >
-          <span className="block md:hidden">↑</span>
-          <span className="hidden md:inline">↑ Top</span>
-        </button>
-      </div>
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M5 10l7-7m0 0l7 7m-7-7v18"
+          />
+        </svg>
+      </button>
 
-      {/* Sakura Tree Image */}
-      <img
-        src={sakura}
-        alt="Sakura Tree"
-        className="fixed -bottom-11 -right-6 w-22 pointer-events-none z-10 hidden 2xl:block"
-      />
+      {/* Decorative Sakura Tree Image */}
+      <div className="fixed bottom-0 right-0 pointer-events-none opacity-50 z-0">
+        <img
+          src={sakura}
+          alt="Sakura Tree"
+          className="w-56 h-auto"
+        />
+      </div>
     </div>
   );
 };

@@ -1,94 +1,99 @@
-import { useState, useRef, useEffect } from "react";
-import { AvatarComponent } from "./BlogCard";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/Logo.png";
-import { useAuth } from "../hooks/index";
-import { ChevronDown } from "lucide-react";
+import { Feather } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/index';
+import { Button } from './ui/button';
+import { Avatar, AvatarFallback } from './ui/Avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export const Appbar = () => {
   const { User, logout } = useAuth();
   const navigate = useNavigate();
-  const [openDropdown, setOpenDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleLogout = () => {
     logout();
-    navigate("/signin");
+    navigate('/signin');
   };
 
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpenDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const handleEditProfile = () => {
+    navigate('/edit');
+  };
 
   return (
-    <div className="w-full flex justify-between items-center pt-5 pb-4 px-0 sm:px-5 border-b border-l border-r border-stone-600 rounded-xl">
-      {/* Left: Logo + Title */}
-      <Link
-        to="/blogs"
-        className="flex items-center text-xl sm:text-2xl font-semibold text-gray-700 hover:text-gray-900 transition pl-2 sm:pl-4"
-      >
-        <img
-          src={logo}
-          alt="GreyEnds Logo"
-          className="w-8 h-8 sm:w-10 sm:h-10 mr-2"
-        />
-        GreyEnds
-      </Link>
-
-      {/* Right: New Button + Dropdown */}
-      <div className="flex items-center space-x-2 sm:space-x-4 pr-3 sm:pr-0 relative">
-        <Link to="/publish">
-          <button
-            type="button"
-            className="text-sm font-semibold sm:text-sm bg-slate-500 sm:bg-gray-700 hover:bg-gray-100 sm:hover:bg-gray-800 text-white sm:text-white border border-gray-300 sm:border-0 rounded-full px-3 py-1 sm:px-5 sm:py-2.5 transition ml-3 sm:ml-0"
-          >
-            New
-          </button>
+    <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <Link 
+          to="/blogs" 
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <div className="w-8 h-8 bg-gradient-to-br from-orange-300 to-rose-400 rounded-lg flex items-center justify-center">
+            <Feather className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-slate-700 font-semibold text-xl">GreyEnds</span>
         </Link>
 
-        {User && (
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setOpenDropdown((prev) => !prev)}
-              className="flex items-center space-x-2 focus:outline-none w-xl"
-            >
-              <AvatarComponent name={User.name} />
-              <span className="text-base font-semibold hidden sm:block">
-                {User.name}
-              </span>
-              <ChevronDown className="w-5 h-5 mt-1 text-black" />
-            </button>
-
-            {openDropdown && (
-              <div className="absolute right-0 mt-2 w-39 bg-gray-500 rounded-lg shadow-lg z-50 border">
-                <Link
-                  to="/edit"
-                  className="block px-4 py-2 text-lg font-semibold text-green-400 hover:bg-emerald-800 rounded-t-lg border-b border-stone-700"
-                  onClick={() => setOpenDropdown(false)}
-                >
-                  Edit Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-lg font-semibold text-red-400 hover:bg-red-800 rounded-b-lg"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        <nav className="flex items-center gap-4">
+          {User ? (
+            <>
+              <Link to="/blogs">
+                <Button variant="ghost" className="text-slate-600">
+                  All Blogs
+                </Button>
+              </Link>
+              <Link to="/publish">
+                <Button className="bg-slate-700 hover:bg-slate-800 text-white">
+                  New
+                </Button>
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="bg-gradient-to-br from-orange-300 to-rose-400 text-white text-xs">
+                        {User.name.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-slate-700 hidden sm:block">{User.name}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleEditProfile}>
+                    Edit Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    onClick={handleLogout}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
+            <>
+              <Link to="/signin">
+                <Button variant="ghost" className="text-slate-600">
+                  Log in
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-gradient-to-r from-orange-400 to-rose-400 hover:from-orange-500 hover:to-rose-500 text-white">
+                  Sign up
+                </Button>
+              </Link>
+            </>
+          )}
+        </nav>
       </div>
-    </div>
+    </header>
   );
 };

@@ -449,7 +449,6 @@ blogRouter.get("/bookmarks" , async(c)=>{
           },
         });
     
-        // Shape response
         return c.json({
           bookmarks: bookmarks.map((bm: any) => ({
             id: bm.blog.id,
