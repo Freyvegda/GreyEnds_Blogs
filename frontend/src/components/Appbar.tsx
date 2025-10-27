@@ -18,7 +18,7 @@ export const Appbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/signin');
+    navigate('/');
   };
 
   const handleEditProfile = () => {
