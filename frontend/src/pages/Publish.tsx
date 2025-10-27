@@ -36,13 +36,13 @@ export const Publish = () => {
         }
     }, [id]);
 
-    return <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex flex-col">
+    return <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col">
         <Appbar/>
         <div className="flex justify-center w-full pt-8 "> 
             <div className="max-w-screen-lg w-full">
                 <input value={title} onChange={(e) => {
                     setTitle(e.target.value)
-                }} type="text" className=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2 px-2 " placeholder="Title" />
+                }} type="text" className=" w-full bg-gray-50 border border-gray-500 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2 px-2 " placeholder="Title" />
 
                 <TextEditor
                     value={description}
@@ -85,7 +85,7 @@ export const Publish = () => {
                         }
                     }}
                     type="submit"
-                    className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+                    className="px-4 py-2 bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white font-medium rounded-md text-sm flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-rose-400"
                 >
                     {id ? "Update post" : "Publish post"}
                 </button>
@@ -129,7 +129,7 @@ export function TextEditor({
               onChange={onChange}
               id="editor"
               rows={8}
-              className="focus:outline-none block w-full px-0 text-lg text-gray-800 bg-white border-0 pl-2"
+              className="focus:outline-none block w-full px-0 text-lg text-gray-800 bg-white border-2 border-gray-500 pl-2"
               placeholder="Write an article..."
               required
             />

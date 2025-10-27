@@ -11,7 +11,7 @@ export const Blog = () => {
     });
 
     if (loading || !blog) {
-        return <div className="min-h-screen bg-gradient-to-br from-slate-400 via-gray-400 to-stone-400 flex flex-col">
+        return <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col">
             <Appbar/>
             <div className="h-screen flex flex-col justify-center">
                 <div className="flex justify-center">

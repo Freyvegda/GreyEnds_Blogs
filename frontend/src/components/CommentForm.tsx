@@ -23,7 +23,7 @@ export const AddCommentForm = ({ blogId }: { blogId: string }) => {
           }
         }}
         disabled={loading || !content.trim()}
-        className="mt-2 bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-4 rounded transition disabled:opacity-50"
+        className="px-4 py-2 bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white font-medium rounded-md text-sm flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-rose-400"
       >
         {loading ? "Posting..." : "Post Comment"}
       </button>
